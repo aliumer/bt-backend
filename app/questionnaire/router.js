@@ -1,21 +1,22 @@
 var router = require('express').Router();
+var q = require('./questionnaire');
 var DB = require('../../db');
 
 function getBySubjectId(req, res) {
   var sql =
-    "select [Name], ID, Subjectid from Questionnaire where SubjectId = " + req.params.id;
+    "select * from Questions where SubjectId = " + req.params.id;
   res.status(200).send('questionnaire.getBySubjectId');
   // DB.executeQuery(sql, res);
 }
 
 function getById(req, res) {
-  var sql = `select Criteria from Questionnaire Where ID = ${req.params.id}`;
+  var sql = `select * from Questions Where ID = ${req.params.id}`;
   res.status(200).send('questionnaire.getById');
   // DB.executeQuery(sql, res);
 }
 
 function getAll(req, res) {
-  var sql =`Select Q.ID, Q.SubjectId, S.SubjectName, Q.Name, Q.Criteria From Questionnaire AS Q 
+  var sql =`Select* from Questions AS Q 
   Inner join Subject AS S  ON Q.SubjectId = S.ID`;
   res.status(200).send('questionnaire.getAll');
   // DB.executeQuery(sql, res);
@@ -32,9 +33,9 @@ function create(req, res) {
   // DB.executeQuery(mySql, res);
 }
 
-router.get('/getBySubjectId/:id', getBySubjectId);
-router.get('/getById/:id', getById);
-router.get('/getAll', getAll);
-router.post('/create', create);
+router.get('/getBySubjectId/:id', q.getBySubjectId);
+router.get('/getById/:id', q.getById);
+router.get('/getAll', q.getAll);
+router.post('/create', q.create);
 
 module.exports = router;

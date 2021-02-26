@@ -5,17 +5,17 @@ var cors = require('cors');
 var questionnaire = require('./app/questionnaire/router');
 var students = require('./app/students/router');
 var subjects = require('./app/subjects/router');
+var inventory = require('./app/inventory/router');
 var jwt = require('jsonwebtoken');
 var app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-
-// See the README about ordering of middleware
-// Load the routes ("controllers" -ish)
 app.use('/questionnaire', authenticateToken ,questionnaire);
-app.use('/students', students);
-app.use('/subjects', subjects);
+app.use('/students', authenticateToken, students);
+app.use('/subjects', authenticateToken, subjects);
+app.use('/inventory', authenticateToken, inventory);
+
 app.post('/login', (req, res) => {
   const username = req.body.username;
   const user = { name: username };

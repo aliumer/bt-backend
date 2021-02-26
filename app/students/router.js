@@ -4,7 +4,7 @@ var ourConfig = require("../../config");
 var sql = require("mssql");
 
 function create(req, res) {
-  res.status(200).send('students.create');
+  res.status(200).send('students.create stored procedure will be called here.');
   // const student = req.body;
   // sql.connect(ourConfig, function () {
   //   var request = new sql.Request();
@@ -14,8 +14,7 @@ function create(req, res) {
   //   request.input("Gender", sql.Char(1), student.gender);
   //   request.input("Year", sql.VarChar(10), student.year);
   //   request.input("Subjects", sql.VarChar(50), student.subject.join(","));
-  //   request
-  //     .execute("student_insert")
+  //   request.execute("student_insert")
   //     .then(function (err, recordsets, returnValue, affected) {
   //       console.dir(err);
   //       res.send(res.statusCode);

@@ -3,44 +3,41 @@ var config = require("./config");
 
 module.exports = {
   executeQuery: (query, res) => {
-    sql.connect(config, () => {
-      var request = new sql.Request();
-      request.query(query, (err, data) => {
-        if (err) {
-          console.log(JSON.stringify(err));
-          res.status(501).send(err);
-        }  else {
-          res.status(200).send(data.recordset);
-        }
-      });
+    sql.connect(config).then(pool => {
+      return pool.request().query(query);
+    }).then(result => {
+      sql.close();
+      res.status(200).send(result.recordset);
+    }).catch(err => { 
+      console.error(err);
+      sql.close();
+      res.status(501).send(err);
     });
   },
 
   executeMultipleQuery: (query, res) => {
-    sql.connect(config, () => {
-      var request = new sql.Request();
-      request.query(query, (err, data) => {
-        if (err) {
-          console.log(JSON.stringify(err));
-          res.status(501).send(err);
-        } else {
-          res.status(200).send(data.recordsets);
-        }
-      });
+    sql.connect(config).then((pool) => {
+      return pool.request().query(query);
+    }).then(result => {
+      sql.close();
+      res.status(200).send(result.recordsets)
+    }).cath(err => {
+      console.error(err);
+      sql.close();
+      res.status(501).send(err);
     });
   },
 
   executeSelect: (query, res) => {
-    sql.connect(config, () => {
-      var request = new sql.Request();
-      request.query(query, (err, data) => {
-        if (err) {
-          console.log(JSON.stringify(err));
-          res.status(501).send(err);
-        } else {
-          res.status(200).send(data.recordsets[0]);
-        }
-      });
+    sql.connect(config).then((pool) => {
+      return pool.request().query(query);
+    }).then(result => {
+      sql.close();
+      res.status(200).send(result.recordset)
+    }).cath(err => {
+      console.error(err);
+      sql.close();
+      res.status(501).send(err);
     });
   }
   
